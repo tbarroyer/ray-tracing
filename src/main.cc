@@ -9,12 +9,13 @@
 # include "point_light.hh"
 # include "renderer.hh"
 # include "image2Dwriter.hh"
+# include "background.hh"
 
 # define FOV (M_PI / 4)
 # define RATIO (640.0 / 480.0)
 # define H 480
 # define W 640
-# define DEEP 6
+# define DEEP 20
 
 using namespace std;
 
@@ -34,23 +35,27 @@ int main()
   Scene scene;
   
   // Light at infinity
-  Light* light0 = new PointLight(Point4(0, 0, 1, 0), Color(1.0, 1.0, 1.0));
+  Light* light0 = new PointLight(Point4(10, 6, -12, 1), Color(1.0, 1.0, 1.0));
 
   Light* light1 = new PointLight(Point4(7, 5, -30, 1), Color(1.0, 1.0, 1.0));
 
   scene.addLight(light0);
-  scene.addLight(light1);
+  //scene.addLight(light1);
 
   // Objects
-  Sphere* sphere1 = new Sphere(Point3(0, 0, -30), 4.0, Material::bronze());
-  Sphere* sphere2 = new Sphere(Point3(0, 6, -40), 3.0, Material::emerald());
+  Sphere* sphere1 = new Sphere(Point3(-5, 6, -30), 4.0, Material::bronze());
+  Sphere* sphere2 = new Sphere(Point3(0, 4, -20), 2.0, Material::emerald());
+  Sphere* sphere3 = new Sphere(Point3(0, 4, -20), 1.999, Material::glass2());
 
-  scene.addObject(sphere1);
+//  scene.addObject(sphere1);
   scene.addObject(sphere2);
+//  scene.addObject(sphere3);
 
   // Rendering
   Renderer renderer(scene);
-  Vector3 orig(0, 0, 0);
+  Background* back = new MyBackground();
+  renderer.setBackground(back);
+  Vector3 orig(0, 0, -0/*.5*/);
   // FOV
   Vector3 dirUL = getDir(Point2(0.0, 0.0), orig);
   Vector3 dirUR = getDir(Point2(W  , 0.0), orig);

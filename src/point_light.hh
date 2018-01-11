@@ -16,7 +16,6 @@ struct PointLight : public Light {
       material(ambient_color, diffuse_color, specular_color)
   {}
   
-  /// Destructor.
   ~PointLight() {}
 
   Vector3 direction(const Vector3& p) const
@@ -29,7 +28,6 @@ struct PointLight : public Light {
     return pos / pos.norm();
   }
 
-  /// @return the color of this light viewed from the given point \a p.
   Color color(const Vector3& /* p */) const
   {
     return emission;

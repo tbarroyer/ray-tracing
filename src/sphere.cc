@@ -1,11 +1,12 @@
 # include <cmath>
+# include <iostream>
 # include "sphere.hh"
 
 Vector3 Sphere::getNormal(Point3 p)
 {
   Vector3 u = p - center;
-  Real   l2 = u.dot( u );
-  if ( l2 != 0.0 )
+  Real   l2 = u.dot(u);
+  if (l2 != 0.0)
     u /= sqrt(l2);
   return u;
 }
@@ -35,12 +36,14 @@ Real Sphere::rayIntersection(const Ray& ray, Real& p)
   if (t0 > t1)
     std::swap(t0, t1);
 
-  if (t0 < 0) {
+  if (t0 < 0.0001) {
+    std::cout << " OK ";
     t0 = t1;
     if (t0 < 0)
         return 100.0;
   }
 
   p = t0;
+  std::cout << " " << p << " ";
   return -100.0;
 }

@@ -89,10 +89,10 @@ struct Material {
   static Material emerald() 
   {
     Material m;
-    m.ambient   = Color( 0.0f, 0.01f, 0.0f ); //Color( 0.0215, 0.1745, 0.0215 );
+    m.ambient   = Color( 0.0115, 0.0745, 0.0215 );
     m.diffuse   = Color( 0.09568, 0.77424, 0.10 );
     m.specular  = Color( 0.9, 1.0, 0.9 ); // Color( 0.633, 0.727811, 0.633 );
-    m.shinyness = 0.6*128.0;
+    m.shinyness = 56;//0.6*128.0;
     m.coef_diffusion  = 0.15f;
     m.coef_reflexion  = 0.5f;
     m.coef_refraction = 0.65f;
@@ -111,6 +111,34 @@ struct Material {
     m.coef_reflexion  = 0.05f;
     m.coef_refraction = 0.98f;
     m.in_refractive_index  = 1.5f;
+    m.out_refractive_index = 1.0f;
+    return m;
+  }
+  static Material glass2() 
+  {
+    Material m;
+    m.ambient   = Color( 0.0, 0.0, 0.0 );
+    m.diffuse   = Color( 0.95, 0.95, 1.0 );
+    m.specular  = Color( 1.0, 1.0, 1.0 );
+    m.shinyness = 80.0f;
+    m.coef_diffusion  = 0.01f;
+    m.coef_reflexion  = 0.05f;
+    m.coef_refraction = 0.98f;
+    m.in_refractive_index  = 1.0f;
+    m.out_refractive_index = 1.1f;
+    return m;
+  }
+  static Material glass3() 
+  {
+    Material m;
+    m.ambient   = Color( 0.0, 0.0, 0.0 );
+    m.diffuse   = Color( 0.95, 0.95, 1.0 );
+    m.specular  = Color( 1.0, 1.0, 1.0 );
+    m.shinyness = 80.0f;
+    m.coef_diffusion  = 0.01f;
+    m.coef_reflexion  = 0.05f;
+    m.coef_refraction = 0.98f;
+    m.in_refractive_index  = 1.1f;
     m.out_refractive_index = 1.0f;
     return m;
   }
