@@ -4,6 +4,8 @@
 # include <string>
 
 # include "scene.hh"
+# include "perio_plan.hh"
+# include "water_plan.hh"
 # include "sphere.hh"
 # include "material.hh"
 # include "point_light.hh"
@@ -12,10 +14,10 @@
 # include "background.hh"
 
 # define FOV (M_PI / 4)
-# define RATIO (640.0 / 480.0)
-# define H 480
-# define W 640
-# define DEEP 20
+# define RATIO (1280.0 / 720.0)
+# define H 720
+# define W 1280
+# define DEEP 1
 
 using namespace std;
 
@@ -43,19 +45,34 @@ int main()
   //scene.addLight(light1);
 
   // Objects
-  Sphere* sphere1 = new Sphere(Point3(-5, 6, -30), 4.0, Material::bronze());
-  Sphere* sphere2 = new Sphere(Point3(0, 4, -20), 2.0, Material::emerald());
-  Sphere* sphere3 = new Sphere(Point3(0, 4, -20), 1.999, Material::glass2());
+  Sphere* sphere1 = new Sphere(Point3(-5, -1, -15), 2.0, Material::bronze());
+  Sphere* sphere2 = new Sphere(Point3(0, -1, -5), 2.0, Material::glass3());
+  Sphere* sphere3 = new Sphere(Point3(0, -1, -5), 1.999, Material::glass2());
+  Sphere* sphere4 = new Sphere(Point3(-3, 2, -10), 1, Material::emerald());
 
-//  scene.addObject(sphere1);
-  scene.addObject(sphere2);
-//  scene.addObject(sphere3);
+  Sphere* sphere5 = new Sphere(Point3(3, 2, -10), 1.4, Material::mirror());
+
+  WaterPlane* plan = new WaterPlane(Point3(1, -1, 1), Vector3(0, 5, 0));
+
+
+  PerioPlane* planun = new PerioPlane(Point3(1, -2, 1), Vector3(0, 5, 0),
+      //Material::whitePlastic(), Material::blackPlastic(), 0.1f);
+      Material::whitePlastic(), Material::blackPlastic(), 0.1f);
+
+  scene.addObject(sphere1);
+  //scene.addObject(sphere2);
+  //scene.addObject(sphere3);
+  //scene.addObject(sphere4);
+  //scene.addObject(sphere5);
+  
+  scene.addObject(plan);
+//  scene.addObject(planun);
 
   // Rendering
   Renderer renderer(scene);
   Background* back = new MyBackground();
   renderer.setBackground(back);
-  Vector3 orig(0, 0, -0/*.5*/);
+  Vector3 orig(0, 0, 0.);
   // FOV
   Vector3 dirUL = getDir(Point2(0.0, 0.0), orig);
   Vector3 dirUR = getDir(Point2(W  , 0.0), orig);

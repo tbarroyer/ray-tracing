@@ -4,9 +4,6 @@
 
 struct Sphere : public Object {
   
-  static const int NLAT = 16; ///< number of different latitudes for display
-  static const int NLON = 24; ///< number of different longitudes for display
-
   // Virtual destructor since object contains virtual methods.
   virtual ~Sphere() {}
 

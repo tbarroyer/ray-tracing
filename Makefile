@@ -5,9 +5,16 @@ all: main
 
 check: main
 	./main
+	feh *.ppm
 
-main: obj/main.o obj/sphere.o obj/renderer.o obj/scene.o obj/background.o
+main: obj/main.o obj/sphere.o obj/renderer.o obj/scene.o obj/background.o obj/perio_plan.o obj/water_plan.o
 	$(CC) -o $@ $^ $(LDFLAGS)
+
+obj/perio_plan.o: src/perio_plan.cc obj
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+obj/water_plan.o: src/water_plan.cc obj
+	$(CC) -o $@ -c $< $(CFLAGS)
 
 obj/main.o: src/main.cc obj
 	$(CC) -o $@ -c $< $(CFLAGS)

@@ -37,13 +37,11 @@ Real Sphere::rayIntersection(const Ray& ray, Real& p)
     std::swap(t0, t1);
 
   if (t0 < 0.0001) {
-    std::cout << " OK ";
     t0 = t1;
     if (t0 < 0)
         return 100.0;
   }
 
   p = t0;
-  std::cout << " " << p << " ";
   return -100.0;
 }

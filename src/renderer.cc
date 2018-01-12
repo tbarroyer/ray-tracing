@@ -1,25 +1,68 @@
 # include "renderer.hh"
 
+# define ANTI 1.0
+
+Real randf(Real l, Real h)
+{
+  if (l > h)
+    std::swap(l, h);
+
+  Real ajd = (h - l) / 4.0;
+
+  h -= ajd;
+  l += ajd;
+
+  return l + static_cast<Real>(rand()) / (static_cast<Real>(RAND_MAX/(h-l)));
+}
 
 void Renderer::render(Image2D<Color>& image, int max_depth)
 {
   std::cout << "Rendering into image ... might take a while." << std::endl;
   image = Image2D<Color>(myWidth, myHeight);
-  for (int y = 0; y < myHeight; ++y)
+  for (int y = 1; y < myHeight - 1; ++y)
   {
     Real    ty   = (Real) y / (Real)(myHeight-1);
     Vector3 dirL = (1.0f - ty) * myDirUL + ty * myDirLL;
     Vector3 dirR = (1.0f - ty) * myDirUR + ty * myDirLR;
     dirL        /= dirL.norm();
     dirR        /= dirR.norm();
-    for (int x = 0; x < myWidth; ++x) 
+
+    Real    tym   = (Real) (y-1) / (Real)(myHeight-1);
+    Vector3 dirLm = (1.0f - tym) * myDirUL + tym * myDirLL;
+    Vector3 dirRm = (1.0f - tym) * myDirUR + tym * myDirLR;
+    dirLm        /= dirLm.norm();
+    dirRm        /= dirRm.norm();
+
+    Real    typ   = (Real) (y+1) / (Real)(myHeight-1);
+    Vector3 dirLp = (1.0f - typ) * myDirUL + typ * myDirLL;
+    Vector3 dirRp = (1.0f - typ) * myDirUR + typ * myDirLR;
+    dirLp        /= dirLp.norm();
+    dirRp        /= dirRp.norm();
+
+    for (int x = 1; x < myWidth - 1; ++x) 
     {
       Real    tx   = (Real) x / (Real)(myWidth-1);
-      Vector3 dir  = (1.0f - tx) * dirL + tx * dirR;
-      Ray eye_ray  = Ray(myOrigin, dir, max_depth);
-      Color result = trace(eye_ray);
-      image.at(x, y) = result.clamp();
+      Real    txm   = (Real) (x - 1) / (Real)(myWidth-1);
+      Real    txp   = (Real) (x + 1) / (Real)(myWidth-1);
 
+      Color avg(0, 0, 0);
+      // ANTI ALIASING
+      for (int j = 0; j < int(ANTI); ++j)
+      {
+//        Vector3 dir  = (1.0f - tx) * dirL + tx * dirR;
+        Vector3 dirm  = (1.0f - txm) * dirLm + txm * dirRm;
+        Vector3 dirp  = (1.0f - txp) * dirLp + txp * dirRp;
+
+        Vector3 dir = Vector3(randf(dirm[0], dirp[0]), randf(dirm[1], dirp[1]), randf(dirm[2], dirp[2]));
+
+//        std::cout << dir << " " << dirp << " " << dirm << "\n";
+
+        Ray eye_ray  = Ray(myOrigin, dir, max_depth);
+        Color result = trace(eye_ray);
+        avg += result;
+      }
+      avg = avg * (1 / ANTI);
+      image.at(x, y) = avg.clamp();
     }
   }
   std::cout << "Done." << std::endl;
@@ -80,16 +123,10 @@ Ray refractionRay(const Ray& ray, const Point3& p, Vector3 N, const Material& m,
   Real in = m.out_refractive_index;
   Real out = m.in_refractive_index;
 
-  std::cout << " " << p << " ";
-
   if (io < 0)
-  {
-    std::cout << " IN ";
     io = -io;
-  }
   else
   {
-    std::cout << " OUT ";
     N = Vector3(0.0, 0.0, 0.0) - N;
     std::swap(in, out);
   }
@@ -141,19 +178,15 @@ Color Renderer::trace(const Ray& ray)
     if (has)
     {
       Color n_c = trace(n_ray);
-  //    std::cout << "(" << n_c[0] << " " << n_c[1] << " " << n_c[2] << ") ";
       out += n_c * m.coef_refraction;
       out.clamp();
     }
     else
     {
-      //out = Color(1.0, 0.0, 0.0);
+      out = Color(1, 0, 0);
       out.clamp();
     }
   }
   
-  if (ray.depth == 2)
-    std::cout << "(" << out[0] << " " << out[1] << " " << out[2] << ")" << "\n";
-
   return out;
 }
