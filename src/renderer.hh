@@ -7,6 +7,9 @@
 # include "background.hh"
 
 struct Renderer {
+//  std::vector<Light*> myLights;
+//  std::vector<Object*> myObjects;
+
   Scene* ptrScene;
   Background* ptrBack;
 
@@ -22,7 +25,15 @@ struct Renderer {
 
   Renderer() : ptrScene(0) {}
   Renderer(Scene& scene) : ptrScene(&scene) {}
-  ~Renderer() { delete ptrBack; }
+  ~Renderer()
+  {
+    delete ptrBack;
+
+    /*for (Light* light : myLights)
+      delete light;
+    for (Object* obj : myObjects)
+      delete obj;*/
+  }
 
   void setScene(Scene& aScene) { ptrScene = &aScene; }
   
@@ -45,7 +56,6 @@ struct Renderer {
     myWidth  = width;
     myHeight = height;
   }
-
 
   void render(Image2D<Color>& image, int max_depth);
 

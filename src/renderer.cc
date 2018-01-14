@@ -1,6 +1,6 @@
 # include "renderer.hh"
 
-# define ANTI 1.0
+# define ANTI 10.0
 
 Real randf(Real l, Real h)
 {
@@ -133,13 +133,12 @@ Ray refractionRay(const Ray& ray, const Point3& p, Vector3 N, const Material& m,
   Real eta = in / out;
 
   Real k = 1 - eta * eta * (1 - io * io);
-  /*if (k < 0)
+  if (k < 0)
   {
-    std::cout << k << " NO REF\n";
     has = false;
     Vector3 out_ = Vector3(0.0, 0.0, 0.0);
     return Ray(p, out_, 0);
-  }*/
+  }
 
   Vector3 out_ = eta * ray.direction + (eta * io - sqrtf(k)) * N;
 
@@ -183,7 +182,7 @@ Color Renderer::trace(const Ray& ray)
     }
     else
     {
-      out = Color(1, 0, 0);
+      out += background(ray) * m.coef_refraction;
       out.clamp();
     }
   }

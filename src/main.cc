@@ -17,7 +17,7 @@
 # define RATIO (1280.0 / 720.0)
 # define H 720
 # define W 1280
-# define DEEP 1
+# define DEEP 10
 
 using namespace std;
 
@@ -45,7 +45,7 @@ int main()
   //scene.addLight(light1);
 
   // Objects
-  Sphere* sphere1 = new Sphere(Point3(-5, -1, -15), 2.0, Material::bronze());
+  Sphere* sphere1 = new Sphere(Point3(-5, -1, -15), 1.0, Material::bronze());
   Sphere* sphere2 = new Sphere(Point3(0, -1, -5), 2.0, Material::glass3());
   Sphere* sphere3 = new Sphere(Point3(0, -1, -5), 1.999, Material::glass2());
   Sphere* sphere4 = new Sphere(Point3(-3, 2, -10), 1, Material::emerald());
@@ -55,18 +55,18 @@ int main()
   WaterPlane* plan = new WaterPlane(Point3(1, -1, 1), Vector3(0, 5, 0));
 
 
-  PerioPlane* planun = new PerioPlane(Point3(1, -2, 1), Vector3(0, 5, 0),
+  PerioPlane* planun = new PerioPlane(Point3(1, -6, 1), Vector3(0, 5, 0),
       //Material::whitePlastic(), Material::blackPlastic(), 0.1f);
       Material::whitePlastic(), Material::blackPlastic(), 0.1f);
 
   scene.addObject(sphere1);
-  //scene.addObject(sphere2);
-  //scene.addObject(sphere3);
-  //scene.addObject(sphere4);
-  //scene.addObject(sphere5);
+  scene.addObject(sphere2);
+  scene.addObject(sphere3);
+  scene.addObject(sphere4);
+  scene.addObject(sphere5);
   
   scene.addObject(plan);
-//  scene.addObject(planun);
+  scene.addObject(planun);
 
   // Rendering
   Renderer renderer(scene);

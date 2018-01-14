@@ -1,5 +1,5 @@
 CC=c++
-CFLAGS=-Wall -Wextra -std=c++11 -g
+CFLAGS=-Wall -Wextra -std=c++11 -O3
 LDFLAGS=
 all: main
 
