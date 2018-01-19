@@ -1,7 +1,7 @@
 # pragma once
 
-# include "color.hh"
-# include "ray.hh"
+# include "lib/color.hh"
+# include "lib/ray.hh"
 
 struct Background {
   virtual Color backgroundColor( const Ray& ray ) = 0;

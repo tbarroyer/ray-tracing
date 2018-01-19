@@ -1,8 +1,8 @@
 # pragma once
 
-# include "point_vector.hh"
-# include "material.hh"
-# include "ray.hh"
+# include "lib/point_vector.hh"
+# include "lib/material.hh"
+# include "lib/ray.hh"
 
 struct Object {
 

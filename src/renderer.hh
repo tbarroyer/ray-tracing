@@ -1,8 +1,8 @@
 # pragma once
 
-# include "color.hh"
-# include "image2D.hh"
-# include "ray.hh"
+# include "lib/color.hh"
+# include "lib/image2D.hh"
+# include "lib/ray.hh"
 # include "scene.hh"
 # include "background.hh"
 

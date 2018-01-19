@@ -7,10 +7,10 @@
 # include "perio_plan.hh"
 # include "water_plan.hh"
 # include "sphere.hh"
-# include "material.hh"
+# include "lib/material.hh"
 # include "point_light.hh"
 # include "renderer.hh"
-# include "image2Dwriter.hh"
+# include "lib/image2Dwriter.hh"
 # include "background.hh"
 
 # define FOV (M_PI / 4)

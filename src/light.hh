@@ -1,6 +1,6 @@
 # pragma once
 
-# include "point_vector.hh"
+# include "lib/point_vector.hh"
 
 struct Light {
   Light() {}
