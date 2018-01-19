@@ -2,8 +2,8 @@
 
 struct WaterPlane : public Object
 {
-  WaterPlane(Point3 c, Vector3 n)
-    : Object(), center(c), N(n)
+  WaterPlane(Point3 c, Vector3 n, Real phase)
+    : Object(), center(c), N(n), phase_(phase)
   {}
 
   virtual ~WaterPlane() {}
@@ -14,6 +14,7 @@ public:
   Real rayIntersection(const Ray& ray, Real& t);
 
 private:
+  Real phase_;
   Point3 center;
   Vector3 N;
 };

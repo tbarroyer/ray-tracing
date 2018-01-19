@@ -31,67 +31,78 @@ Vector3 getDir(Point2 p, Vector3& orig)
   return dir / n;
 }
 
-int main()
-{
+Scene* get_scene(size_t i) {
   // Creates a 3D scene
-  Scene scene;
-  
+  Scene* scene = new Scene();
+
   // Light at infinity
   Light* light0 = new PointLight(Point4(10, 6, -12, 1), Color(1.0, 1.0, 1.0));
 
   Light* light1 = new PointLight(Point4(7, 5, -30, 1), Color(1.0, 1.0, 1.0));
 
-  scene.addLight(light0);
+  scene->addLight(light0);
   //scene.addLight(light1);
 
   // Objects
-  Sphere* sphere1 = new Sphere(Point3(-5, -1, -15), 1.0, Material::bronze());
-  Sphere* sphere2 = new Sphere(Point3(0, -1, -5), 2.0, Material::glass3());
-  Sphere* sphere3 = new Sphere(Point3(0, -1, -5), 1.999, Material::glass2());
+  Sphere* sphere1 = new Sphere(Point3(-5. + 0.1 * i, -1 - cos(i * 0.02), -15), 1.0, Material::bronze());
+  Sphere* sphere2 = new Sphere(Point3(0. - 0.05 * i, -1 + sin(i * 0.01), -5), 2.0, Material::glass3());
+  Sphere* sphere3 = new Sphere(Point3(0, -1 + i * 0.04, -5), 1.999, Material::glass2());
   Sphere* sphere4 = new Sphere(Point3(-3, 2, -10), 1, Material::emerald());
 
   Sphere* sphere5 = new Sphere(Point3(3, 2, -10), 1.4, Material::mirror());
 
-  WaterPlane* plan = new WaterPlane(Point3(1, -1, 1), Vector3(0, 5, 0));
+  WaterPlane* plan = new WaterPlane(Point3(1, -1, 1), Vector3(0, 5, 0), .3 * i);
 
 
   PerioPlane* planun = new PerioPlane(Point3(1, -6, 1), Vector3(0, 5, 0),
       //Material::whitePlastic(), Material::blackPlastic(), 0.1f);
       Material::whitePlastic(), Material::blackPlastic(), 0.1f);
 
-  scene.addObject(sphere1);
-  scene.addObject(sphere2);
-  scene.addObject(sphere3);
-  scene.addObject(sphere4);
-  scene.addObject(sphere5);
-  
-  scene.addObject(plan);
-  scene.addObject(planun);
+  scene->addObject(sphere1);
+  scene->addObject(sphere2);
+  scene->addObject(sphere3);
+  scene->addObject(sphere4);
+  scene->addObject(sphere5);
 
-  // Rendering
-  Renderer renderer(scene);
-  Background* back = new MyBackground();
-  renderer.setBackground(back);
-  Vector3 orig(0, 0, 0.);
-  // FOV
-  Vector3 dirUL = getDir(Point2(0.0, 0.0), orig);
-  Vector3 dirUR = getDir(Point2(W  , 0.0), orig);
-  Vector3 dirLL = getDir(Point2(0.0,   H), orig);
-  Vector3 dirLR = getDir(Point2(W  ,   H), orig);
+  scene->addObject(plan);
+  scene->addObject(planun);
 
-  std::cout << dirUL << "\n";
-  std::cout << dirUR << "\n";
-  std::cout << dirLL << "\n";
-  std::cout << dirLR << "\n";
+  return scene;
+}
 
-  renderer.setViewBox(orig, dirUL, dirUR, dirLL, dirLR);
+int main()
+{
+  for (size_t i = 0; i < 25 * 5; ++i) {
+    Scene* s = get_scene(i);
+    Scene& scene = *s;
 
-  Image2D<Color> image(W, H);
-  renderer.setResolution(image.w(), image.h());
-  renderer.render(image, DEEP);
-  ofstream output("output.ppm");
-  Image2DWriter<Color>::write(image, output, true);
-  output.close();
+    // Rendering
+    Renderer renderer(scene);
+    Background* back = new MyBackground();
+    renderer.setBackground(back);
+    Vector3 orig(0, 0, 0.);
+    // FOV
+    Vector3 dirUL = getDir(Point2(0.0, 0.0), orig);
+    Vector3 dirUR = getDir(Point2(W  , 0.0), orig);
+    Vector3 dirLL = getDir(Point2(0.0,   H), orig);
+    Vector3 dirLR = getDir(Point2(W  ,   H), orig);
 
+    std::cout << dirUL << "\n";
+    std::cout << dirUR << "\n";
+    std::cout << dirLL << "\n";
+    std::cout << dirLR << "\n";
+
+    renderer.setViewBox(orig, dirUL, dirUR, dirLL, dirLR);
+
+    Image2D<Color> image(W, H);
+    renderer.setResolution(image.w(), image.h());
+    renderer.render(image, DEEP);
+    std::string n = std::to_string(i);
+    std::string filename = "video/" + std::string(4 - n.length(), '0') + n + ".ppm";
+    ofstream output(filename);
+    Image2DWriter<Color>::write(image, output, true);
+    output.close();
+    delete s;
+  }
   return 0;
 }

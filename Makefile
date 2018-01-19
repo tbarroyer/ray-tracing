@@ -1,6 +1,6 @@
 CC=c++
-CFLAGS=-Wall -Wextra -std=c++11 -O3
-LDFLAGS=
+CFLAGS=-Wall -Wextra -std=c++11 -O3 -fopenmp
+LDFLAGS=-fopenmp
 all: main
 
 check: main

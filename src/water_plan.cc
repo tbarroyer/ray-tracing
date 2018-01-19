@@ -12,16 +12,16 @@ Real t(Real x, Real y)
   return x * cos(A) + y * sin(A);
 }
 
-Real f(Real x, Real y, Real a)
+Real f(Real x, Real y, Real a, Real phase)
 {
-  return R * cos(2 * 3.14 * t(x, y) / a + PHASE);
+  return R * cos(2 * 3.14 * t(x, y) / a + phase);
 }
 
 Vector3 WaterPlane::getNormal(Point3 p)
 {
   Vector3 N_ = Vector3(0,0,0) - N;
-  N_[0] += f(p[0], 0, 1);
-  N_[2] += f(p[2], 0, 1.5);
+  N_[0] += f(p[0], 0, 1, phase_);
+  N_[2] += f(p[2], 0, 1.5, phase_);
   return N_ / N_.norm();
 }
 

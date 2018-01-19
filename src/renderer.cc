@@ -1,6 +1,6 @@
 # include "renderer.hh"
 
-# define ANTI 10.0
+# define ANTI 5.0
 
 Real randf(Real l, Real h)
 {
@@ -19,6 +19,8 @@ void Renderer::render(Image2D<Color>& image, int max_depth)
 {
   std::cout << "Rendering into image ... might take a while." << std::endl;
   image = Image2D<Color>(myWidth, myHeight);
+
+  #pragma omp parallel for schedule(dynamic)
   for (int y = 1; y < myHeight - 1; ++y)
   {
     Real    ty   = (Real) y / (Real)(myHeight-1);
